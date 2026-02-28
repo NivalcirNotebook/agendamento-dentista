@@ -41,7 +41,7 @@ export class WebhookController {
     }
   }
 
-  static async healthCheck(req: Request, res: Response): Promise<void> {
+  static async healthCheck(_req: Request, res: Response): Promise<void> {
     try {
       const isConnected = await evolutionService.getInstanceStatus();
       

@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.post('/webhook/evolution', WebhookController.handleEvolutionWebhook);
 app.get('/health', WebhookController.healthCheck);
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.json({
     name: 'Dentista Bot WhatsApp',
     version: '1.0.0',
