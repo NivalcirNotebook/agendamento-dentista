@@ -93,9 +93,12 @@ export class DentistAgent {
         default:
           return 'Desculpe, não consegui processar essa operação.';
       }
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Erro ao executar função ${functionName}:`, error);
-      return 'Desculpe, ocorreu um erro ao processar sua solicitação.';
+      if (error.message?.includes('Google Calendar')) {
+        return '❌ Tivemos uma instabilidade temporária com o sistema de agendamentos. Por favor, tente novamente em alguns instantes.';
+      }
+      return '❌ Ocorreu um erro inesperado. Por favor, tente novamente.';
     }
   }
 

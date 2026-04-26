@@ -81,14 +81,7 @@ export class CalendarService {
         response: error.response?.data,
         status: error.response?.status,
       });
-      
-      // Se for erro de autenticação, retornar disponível ao invés de falhar
-      if (error.code === 401 || error.code === 403 || error.message?.includes('Bad Request')) {
-        logger.warn('Erro de autenticação/permissão do Google Calendar - retornando disponível');
-        return { available: true };
-      }
-      
-      throw new Error('Não foi possível verificar a disponibilidade');
+      throw new Error('Não foi possível verificar a disponibilidade no Google Calendar');
     }
   }
 
@@ -157,7 +150,7 @@ export class CalendarService {
         errors: error.errors,
         response: error.response?.data,
       });
-      throw new Error('Não foi possível criar o agendamento');
+      throw new Error('Não foi possível criar o agendamento no Google Calendar');
     }
   }
 
