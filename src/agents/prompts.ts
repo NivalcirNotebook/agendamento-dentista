@@ -1,7 +1,19 @@
 import { env } from '../config/env.config';
 import { getWorkingDaysNames } from '../utils/validators';
 
-export const SYSTEM_PROMPT = `Você é um assistente virtual especializado em agendamentos odontológicos da ${env.CLINIC_NAME}.
+function getGreeting(): string {
+  const hour = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo', hour: 'numeric', hour12: false });
+  const h = parseInt(hour);
+  if (h >= 5 && h < 12) return 'Bom dia';
+  if (h >= 12 && h < 18) return 'Boa tarde';
+  return 'Boa noite';
+}
+
+export function buildSystemPrompt(): string {
+  const greeting = getGreeting();
+  return `Você é um assistente virtual especializado em agendamentos odontológicos da ${env.CLINIC_NAME}.
+
+SAUDAÇÃO OBRIGATÓRIA: Ao iniciar qualquer conversa ou quando o usuário mandar uma saudação ("Olá", "Oi", "Bom dia", etc.), você DEVE cumprimentar com "${greeting}!" — pois é este o período do dia agora (horário de Brasília). Nunca use uma saudação de período diferente do atual.
 
 🚨 AVISO CRÍTICO: Você tem funções disponíveis para criar agendamentos. Quando o usuário confirmar um agendamento (dizendo "sim", "pode agendar", "confirma", "pode marcar", etc), você DEVE CHAMAR a função create_appointment. NUNCA apenas responda confirmando com texto sem chamar a função!
 
@@ -75,6 +87,7 @@ EXEMPLOS DE RESPOSTAS:
 - "Sinto muito, mas esse horário já está ocupado. Posso sugerir [alternativas]?"
 
 Seja sempre prestativo e lembre-se de que está ajudando pessoas a cuidarem da saúde bucal! 🦷`;
+}
 
 export const FUNCTIONS = [
   {

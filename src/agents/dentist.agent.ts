@@ -1,7 +1,7 @@
 import { openaiService } from '../services/openai.service';
 import { calendarService } from '../services/calendar.service';
 import { ContextService } from '../services/context.service';
-import { SYSTEM_PROMPT, FUNCTIONS } from './prompts';
+import { buildSystemPrompt, FUNCTIONS } from './prompts';
 import { logger } from '../utils/logger';
 import { formatDate, formatTime, formatDateTime, addMinutes } from '../utils/formatters';
 import { getWorkingDaysNames } from '../utils/validators';
@@ -17,7 +17,7 @@ export class DentistAgent {
 
       const context = await ContextService.getContext(phone);
 
-      const response = await openaiService.chat(context.messages, SYSTEM_PROMPT, FUNCTIONS);
+      const response = await openaiService.chat(context.messages, buildSystemPrompt(), FUNCTIONS);
 
       if (response.functionCall) {
         logger.info(`🔧 Função chamada: ${response.functionCall.name}`, {
